@@ -11,14 +11,14 @@ ejdic = {
     "winter":"冬",
 }
 
-def writeDic(filename, dic):
+def saveDic(filename, dic):
     '''辞書をファイルにCSV形式で保存する
     '''
     with open(filename, "w") as f:
         for key in dic:
             f.write(key + "," + dic[key] + "\n")
 
-def readDic(filename):
+def loadDic(filename):
     '''ファイルに保存された辞書を読み出してdict型を返す
     '''
     rtdic ={}
@@ -31,8 +31,8 @@ def readDic(filename):
     return rtdic
 
 if __name__ == "__main__":
-    writeDic(dicfilename, ejdic)
+    saveDic(dicfilename, ejdic)
     ejdic2 = {}
-    ejdic2 = readDic(dicfilename)
+    ejdic2 = loadDic(dicfilename)
     print(ejdic2)
 
