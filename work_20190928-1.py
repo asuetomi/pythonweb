@@ -11,12 +11,12 @@ ejdic = {
     "winter":"冬",
 }
 
-with open(filename, "w") as f:
+with open(filename, "w", encoding="utf-8") as f:
     for key in ejdic:
         f.write(key+","+ejdic[key]+"\n")
 
 ejdic2 ={}
-with open(filename, "r") as fr:
+with open(filename, "r", encoding="utf-8") as fr:
     readdata = fr.read()
     lines = readdata.splitlines()
     for line in lines:

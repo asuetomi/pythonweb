@@ -14,7 +14,7 @@ ejdic = {
 def saveDic(filename, dic):
     '''辞書をファイルにCSV形式で保存する
     '''
-    with open(filename, "w") as f:
+    with open(filename, "w", encoding="utf-8") as f:
         for key in dic:
             f.write(key + "," + dic[key] + "\n")
 
@@ -22,7 +22,7 @@ def loadDic(filename):
     '''ファイルに保存された辞書を読み出してdict型を返す
     '''
     rtdic ={}
-    with open(filename, "r") as fr:
+    with open(filename, "r", encoding="utf-8") as fr:
         readdata = fr.read()
         lines = readdata.splitlines()
         for line in lines:
