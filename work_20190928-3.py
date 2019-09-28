@@ -55,4 +55,4 @@ with open(dicfilename, "a", encoding="utf-8") as f:
             # saveDic(dicfilename, dic)
             f.write(key + "," + dic[key] + "\n")
 
-print("さよなら")
+print("またね")
