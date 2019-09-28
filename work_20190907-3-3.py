@@ -1,7 +1,6 @@
 '''
 辞書ファイルがあれば読み込んで、入力内容を辞書に追加していくプログラム
 '''
-import os
 
 filename = "dictest3.txt"
 dic = {}
