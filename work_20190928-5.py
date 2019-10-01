@@ -12,7 +12,10 @@
 11. しりとりで、一度出た言葉を使用できないようにしましょう
 '''
 
+import random
+
 dicfilename = "talkdic.csv"
+responsefilename = "response.csv"
 dic = {}
 
 def saveDic(filename, dic):
@@ -41,6 +44,11 @@ with open(dicfilename, "a") as f:
 #  2. ファイルを辞書に入れる。
 dic = loadDic(dicfilename)
 
+# 応答用ファイルを読む
+resDic = loadDic(responsefilename)
+# print(resDic)
+resMax = len(resDic) - 1
+# print(resMax)
 with open(dicfilename, "a", encoding="utf-8") as f:
     while True:
     #  3. 入力待ちをする。
@@ -50,7 +58,7 @@ with open(dicfilename, "a", encoding="utf-8") as f:
     #  8． in 演算子を使用して、文章中に「こんにちは」がふくまれていたら、挨拶を返しましょ う
         if "こんにちは" in key:
             print("こんにちは")
-            continue
+            key = input(resDic[str(random.randint(0, resMax))])
         if key in dic:
             print(dic[key]," のことですね")
         else:
