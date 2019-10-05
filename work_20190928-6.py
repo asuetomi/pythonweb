@@ -59,16 +59,8 @@ def siritori():
             break
     # ここまで来たら正解
     # 知らない言葉だったら覚える
-        have = False
-        words = siriDic[ret[0]].split("|")
-        for word in words:
-            if word == ret:
-                have = True
-        if have == False:
-            temp = ret
-            if not (len(words) == 1 and words[0] == ""):
-                temp = "|" + temp
-            siriDic[ret[0]] = siriDic[ret[0]] + temp
+        siriDic = addSiriDic(siriDic, ret)
+
         ans = siriDic[ret[-1]].split("|")
         print(ans, len(ans), "[" + ans[0] + "]")
     # また、コンピュータが分からない言葉が来たら負けとして、その言葉にどう返せばいいか聞きましょう。
@@ -77,19 +69,32 @@ def siritori():
             temp = input("なんて返せばいいの？ > ")
             if temp[0] == ret[-1]:
                 print(temp + " と返せばいいのね。")
-                if not (len(ans) == 1 and ans[0] == ""):
-                    temp = "|" + temp
-                siriDic[ret[-1]] = siriDic[ret[-1]] + temp
+                siriDic = addSiriDic(siriDic, temp)
                 print("覚えた！\nじゃあまた遊ぼうね")
                 break
 
-            # break
         res = ans[random.randint(0, len(ans) - 1)]
 
     # 辞書を保存する
     saveDic(siritoriFilename, siriDic)
     return
 
+def addSiriDic(dic, str):
+    '''
+    しりとりの辞書に単語を登録する
+    '''
+    have = False
+    words = dic[str[0]].split("|")
+    for word in words:
+        if word == str:
+            have = True
+    if have == False:
+        temp = str
+        if not (len(words) == 1 and words[0] == ""):
+            temp = "|" + temp
+        dic[str[0]] = dic[str[0]] + temp
+        print("登録した", str, dic[str[0]])
+    return dic
 
 
 # ファイルがないときのため
