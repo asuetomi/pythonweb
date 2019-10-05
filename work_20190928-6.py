@@ -53,16 +53,41 @@ def siritori():
             print("ちがうよ")
             ret = input(res + " > ")
             continue
-    # 最後に「ん」がつく言葉が来た ら勝敗判定しましょう。また、コンピュータが分からない言葉が来たら負けとして、その 言葉にどう返せばいいか聞きましょう。聞いた言葉はファイルに記録して、徐々に成 ⾧させましょう。
+    # 最後に「ん」がつく言葉が来たら勝敗判定しましょう。
         if ret[-1] == "ん":
             print("「ん」で終わったからあなたの負けです。")
             break
+    # ここまで来たら正解
+    # 知らない言葉だったら覚える
+        have = False
+        words = siriDic[ret[0]].split("|")
+        for word in words:
+            if word == ret:
+                have = True
+        if have == False:
+            temp = ret
+            if not (len(words) == 1 and words[0] == ""):
+                temp = "|" + temp
+            siriDic[ret[0]] = siriDic[ret[0]] + temp
         ans = siriDic[ret[-1]].split("|")
         print(ans, len(ans), "[" + ans[0] + "]")
+    # また、コンピュータが分からない言葉が来たら負けとして、その言葉にどう返せばいいか聞きましょう。
         if len(ans) == 1 and ans[0] == "":
-            print("う～ん、わかりません。私の負けです")
-            break
+            print("う～ん、わかりません。私の負けです。")
+            temp = input("なんて返せばいいの？ > ")
+            if temp[0] == ret[-1]:
+                print(temp + " と返せばいいのね。")
+                if not (len(ans) == 1 and ans[0] == ""):
+                    temp = "|" + temp
+                siriDic[ret[-1]] = siriDic[ret[-1]] + temp
+                print("覚えた！\nじゃあまた遊ぼうね")
+                break
+
+            # break
         res = ans[random.randint(0, len(ans) - 1)]
+
+    # 辞書を保存する
+    saveDic(siritoriFilename, siriDic)
     return
 
 
@@ -95,7 +120,7 @@ with open(dicfilename, "a", encoding="utf-8") as f:
             siritori()
             continue
         if key in dic:
-            print(dic[key]," のことですね")
+            print(dic[key] + " のことですね")
         else:
     #  4. 入力されたものが辞書になければ「（入力された内容）って何ですか？」と質問する。
     #  5. 回答を入力待ちする。
