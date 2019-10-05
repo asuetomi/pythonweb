@@ -8,7 +8,9 @@
  7. 1に戻る。
  8． in 演算子を使用して、文章中に「こんにちは」がふくまれていたら、挨拶を返しましょ う
  9. ランダム応答用のファイルを別に用意して挨拶をされたら、挨拶を返した後に応答 用ファイルから話題を提供できるようにしましょう
-10. しりとり、と入力された場合、しりとりを開始しましょう。最後に「ん」がつく言葉が来た ら勝敗判定しましょう。また、コンピュータが分からない言葉が来たら負けとして、その 言葉にどう返せばいいか聞きましょう。聞いた言葉はファイルに記録して、徐々に成 ⾧させましょう。
+10. しりとり、と入力された場合、しりとりを開始しましょう。最後に「ん」がつく言葉が来た ら勝敗判定しましょう。
+    また、コンピュータが分からない言葉が来たら負けとして、その言葉にどう返せばいいか聞きましょう。
+    聞いた言葉はファイルに記録して、徐々に成⾧させましょう。
 11. しりとりで、一度出た言葉を使用できないようにしましょう
 '''
 
@@ -16,6 +18,7 @@ import random
 
 dicfilename = "talkdic.csv"
 responsefilename = "response.csv"
+siritoriFilename = "siritori.csv"
 dic = {}
 
 def saveDic(filename, dic):
@@ -33,9 +36,35 @@ def loadDic(filename):
         readdata = fr.read()
         lines = readdata.splitlines()
         for line in lines:
-            dic = line.split(",")
-            rtdic[dic[0]] = dic[1]
+            data = line.split(",")
+            rtdic[data[0]] = data[1]
     return rtdic
+
+def siritori():
+    '''しりとりをする
+    '''
+    siriDic = loadDic(siritoriFilename)
+    print("しりとりをするのね。お先にどうぞ")
+    ret = input("> ")
+    while(True):
+        ans = siriDic[ret[-1]].split("|")
+        print(ans, len(ans), "[" + ans[0] + "]")
+        if len(ans) == 1 and ans[0] == "":
+            print("う～ん、わかりません。私の負けです")
+            return
+        res = ans[random.randint(0, len(ans) - 1)]
+        ret = input(res + " > ")
+        while (ret[0] != res[-1]):
+            print("ちがうよ")
+            ret = input()
+            continue
+    # 最後に「ん」がつく言葉が来た ら勝敗判定しましょう。また、コンピュータが分からない言葉が来たら負けとして、その 言葉にどう返せばいいか聞きましょう。聞いた言葉はファイルに記録して、徐々に成 ⾧させましょう。
+        if ret[-1] == "ん":
+            print("「ん」で終わったからあなたの負けです。")
+            break
+    return
+
+
 
 # ファイルがないときのため
 with open(dicfilename, "a") as f:
@@ -60,6 +89,10 @@ with open(dicfilename, "a", encoding="utf-8") as f:
             print("こんにちは")
     #  9. ランダム応答用のファイルを別に用意して挨拶をされたら、挨拶を返した後に応答 用ファイルから話題を提供できるようにしましょう
             key = input(resDic[str(random.randint(0, resMax))])
+    # 10. しりとり、と入力された場合、しりとりを開始しましょう。
+        if "しりとり" in key:
+            siritori()
+            continue
         if key in dic:
             print(dic[key]," のことですね")
         else:
