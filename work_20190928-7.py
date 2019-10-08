@@ -1,0 +1,181 @@
+'''
+ 1. 辞書をファイルに入れる。
+ 2. ファイルを辞書に入れる。
+ 3. 入力待ちをする。
+ 4. 入力されたものが辞書になければ「（入力された内容）って何ですか？」と質問する。
+ 5. 回答を入力待ちする。
+ 6. 質問と答えを辞書に入れ、ファイルに記録する。
+ 7. 1に戻る。
+ 8． in 演算子を使用して、文章中に「こんにちは」がふくまれていたら、挨拶を返しましょ う
+ 9. ランダム応答用のファイルを別に用意して挨拶をされたら、挨拶を返した後に応答 用ファイルから話題を提供できるようにしましょう
+10. しりとり、と入力された場合、しりとりを開始しましょう。
+    最後に「ん」がつく言葉が来た ら勝敗判定しましょう。
+    また、コンピュータが分からない言葉が来たら負けとして、その言葉にどう返せばいいか聞きましょう。
+    聞いた言葉はファイルに記録して、徐々に成⾧させましょう。
+11. しりとりで、一度出た言葉を使用できないようにしましょう
+'''
+
+import random
+
+dicfilename = "talkdic.csv"
+responsefilename = "response.csv"
+siritoriFilename = "siritori.csv"
+usedDic = {}
+
+def saveDic(filename, dic):
+    '''辞書をファイルにCSV形式で保存する
+    '''
+    with open(filename, "w", encoding="utf-8") as f:
+        for key in dic:
+            f.write(key + "," + dic[key] + "\n")
+
+def loadDic(filename):
+    '''ファイルに保存された辞書を読み出してdict型を返す
+    '''
+    rtdic ={}
+    with open(filename, "r", encoding="utf-8") as fr:
+        readdata = fr.read()
+        lines = readdata.splitlines()
+        for line in lines:
+            data = line.split(",")
+            rtdic[data[0]] = data[1]
+    return rtdic
+
+def siritori():
+    '''しりとりをする
+    '''
+    siriDic = loadDic(siritoriFilename)
+    print("しりとりをするのね。お先にどうぞ")
+    res = ""
+    while(True):
+        ret = input(res + " > ")
+        while (res != "" and ret[0] != res[-1]):
+            print("ちがうよ")
+            ret = input(res + " > ")
+            continue
+    # 最後に「ん」がつく言葉が来たら勝敗判定しましょう。
+        if ret[-1] == "ん":
+            print("「ん」で終わったからあなたの負けです。")
+            break
+    # 11. しりとりで、一度出た言葉を使用できないようにしましょう(ユーザ)
+        if ret in usedDic:
+            print(ret+" はもう出たよ")
+            continue
+    # ここまで来たら正解
+        usedDic[ret] = ret
+    # 知らない言葉だったら覚える
+        siriDic = addSiriDic(siriDic, ret)
+
+        ans = siriDic[ret[-1]].split("|")
+        print(ans, len(ans), "[" + ans[0] + "]")
+    # また、コンピュータが分からない言葉が来たら負けとして、その言葉にどう返せばいいか聞きましょう。
+        if len(ans) == 1 and ans[0] == "":
+            giveUp(siriDic, ret[-1])
+            break
+
+    # 11. しりとりで、一度出た言葉を使用できないようにしましょう(コンピュータ)
+        useCount = 0
+        while(useCount <= len(ans) - 1):
+            res = ans[random.randint(0, len(ans) - 1)]
+            if (res in usedDic):
+                useCount += 1
+                res = ""
+                continue
+            else:
+                usedDic[res] = res
+                break
+
+        if (res == ""):
+            giveUp(siriDic, ret[-1])
+            break
+
+    # 辞書を保存する
+    saveDic(siritoriFilename, siriDic)
+    return
+
+def addSiriDic(dic, str):
+    '''
+    しりとりの辞書に単語を登録する
+    '''
+    have = False
+    words = dic[str[0]].split("|")
+    for word in words:
+        if word == str:
+            have = True
+    if have == False:
+        temp = str
+        if not (len(words) == 1 and words[0] == ""):
+            temp = "|" + temp
+        dic[str[0]] = dic[str[0]] + temp
+        # print("登録した", str, dic[str[0]])
+
+    # 辞書を保存する
+    saveDic(siritoriFilename, dic)
+
+    return dic
+
+def giveUp(dic, lastChar):
+    '''
+    敗戦処理
+    '''
+    print("う～ん、わかりません。私の負けです。")
+    words = dic[lastChar].split("|")
+    temp = input("なんて返せばいいの？ > ")
+    while temp[0] != lastChar:
+        temp = input("ちゃんと教えてよ > ")
+    while temp in words:
+        print(temp+" は知ってる")
+        temp = input("ほかの言葉を教えて > ")
+        while temp[0] != lastChar:
+            temp = input("ちゃんと教えてよ > ")
+        continue
+
+    print(temp + " と返せばいいのね。")
+    siriDic = addSiriDic(dic, temp)
+    print("覚えた！\nじゃあまた遊ぼうね")
+    return
+
+# ここからメインの処理
+
+# ファイルがないときのため
+with open(dicfilename, "a") as f:
+    pass
+
+#  2. ファイルを辞書に入れる。
+dic = loadDic(dicfilename)
+
+# 応答用ファイルを読む
+resDic = loadDic(responsefilename)
+# print(resDic)
+resMax = len(resDic) - 1
+# print(resMax)
+with open(dicfilename, "a", encoding="utf-8") as f:
+    while True:
+    #  3. 入力待ちをする。
+        key = input("何か言って > ")
+        if key == "exit":
+            break
+        if key == "":
+            continue
+    #  8． in 演算子を使用して、文章中に「こんにちは」がふくまれていたら、挨拶を返しましょ う
+        if "こんにちは" in key:
+            print("こんにちは")
+    #  9. ランダム応答用のファイルを別に用意して挨拶をされたら、挨拶を返した後に応答 用ファイルから話題を提供できるようにしましょう
+            key = input(resDic[str(random.randint(0, resMax))])
+    # 10. しりとり、と入力された場合、しりとりを開始しましょう。
+        if "しりとり" in key:
+            siritori()
+            continue
+        if key in dic:
+            print(dic[key] + " のことですね")
+        else:
+    #  4. 入力されたものが辞書になければ「（入力された内容）って何ですか？」と質問する。
+    #  5. 回答を入力待ちする。
+            value = input(key + "って何ですか？ ")
+            print(key," は ",value," のことですね")
+    #  6. 質問と答えを辞書に入れ、ファイルに記録する。
+            dic[key] = value
+            # saveDic(dicfilename, dic)
+            f.write(key + "," + dic[key] + "\n")
+
+print("またね")
