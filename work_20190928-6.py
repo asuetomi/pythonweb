@@ -67,11 +67,12 @@ def siritori():
         if len(ans) == 1 and ans[0] == "":
             print("う～ん、わかりません。私の負けです。")
             temp = input("なんて返せばいいの？ > ")
-            if temp[0] == ret[-1]:
-                print(temp + " と返せばいいのね。")
-                siriDic = addSiriDic(siriDic, temp)
-                print("覚えた！\nじゃあまた遊ぼうね")
-                break
+            while temp[0] != ret[-1]:
+                temp = input("ちゃんと教えてよ > ")
+            print(temp + " と返せばいいのね。")
+            siriDic = addSiriDic(siriDic, temp)
+            print("覚えた！\nじゃあまた遊ぼうね")
+            break
 
         res = ans[random.randint(0, len(ans) - 1)]
 
@@ -93,7 +94,11 @@ def addSiriDic(dic, str):
         if not (len(words) == 1 and words[0] == ""):
             temp = "|" + temp
         dic[str[0]] = dic[str[0]] + temp
-        print("登録した", str, dic[str[0]])
+        # print("登録した", str, dic[str[0]])
+
+    # 辞書を保存する
+    saveDic(siritoriFilename, dic)
+
     return dic
 
 
@@ -115,6 +120,8 @@ with open(dicfilename, "a", encoding="utf-8") as f:
         key = input("何か言って ")
         if key == "exit":
             break
+        if key == "":
+            continue
     #  8． in 演算子を使用して、文章中に「こんにちは」がふくまれていたら、挨拶を返しましょ う
         if "こんにちは" in key:
             print("こんにちは")
