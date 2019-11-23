@@ -3,12 +3,19 @@
         <title>Chatbot</title>
     </html
     <body>
-        <p>{{lines|safe}}</p>
-        <p>{{insert_data|safe}}</p>
-        <form action="{% url 'chatbot' %}" method='POST'>
+        <form action="{% url 'chatbot:chatbot' %}" method='POST'>
             {% csrf_token %}
             {{ form }}
+            {% comment %} <input type="hidden" name="lines" value={{ lines|safe }}> {% endcomment %}
             <input type="submit" value="送信">
+            {% comment %} <p>{{lines|safe}}</p> {% endcomment %}
+            <p/>
+            {% for line in lines%}
+                {{line|safe}}<br/>
+            {% endfor %}
+            {% comment %} {{conversation}} {% endcomment %}
         </form>
+        {% comment %} <p>{{insert_data|safe}}</p> {% endcomment %}
+        {% comment %} <p>{{lines|safe}}</p> {% endcomment %}
     </body>
 </html>
