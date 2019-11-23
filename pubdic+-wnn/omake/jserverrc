@@ -1,0 +1,29 @@
+;
+; jserverrc: start up file for jserver
+;
+; modified for pubdic+ by endo-h@zizi.cs.uec.ac.jp
+;
+
+max_client 64
+jserver_dir @LIBDIR/@LANG/dic
+readfile pubdic+/kihon.dic
+readfile pubdic+/setsuji.dic
+readfile pubdic+/koyuu.dic
+readfile pubdic+/chimei.dic
+readfile pubdic+/jinmei.dic
+readfile pubdic+/special.dic
+readfile pubdic+/computer.dic
+readfile pubdic+/symbol.dic
+readfile pubdic+/tankan.dic
+readfile pubdic+/bio.dic
+
+readfile pubdic+/full.fzk
+
+;readfile wnncons/tankan2.dic
+;readfile wnncons/tankan3.dic
+
+;         n nbun hindo len jiri flag jisho sbn dbn_len sbn_cnt suji kana eisuu kigou toji fuzoku kai
+def_param 2 10   2     40  100  200  20    1   40      -40     40   -100 40    80    40   100    40
+
+;set_giji_eisuu '-' '_' 0x20 \x5c ^M '変' 1234 012 \o12
+set_giji_eisuu '-' '_' 0x20 '―' '＿' '￣' '!' '?' '.' ',' ':' ';' '：' '；' '？' '！' '，' '．' '・'

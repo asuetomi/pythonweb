@@ -1,0 +1,64 @@
+;;	-*-Emacs-Lisp-*-
+;;	
+;;	.eggrc for Wnn4.2 (jserver, pubdic+, gerodic)
+;;		by endo-h@zizi.cs.uec.ac.jp
+;;
+
+;(defvar wnn-usr-dic-dir "usr/$USER")
+(defvar wnn-usr-dic-dir (concat "usr/" (user-login-name)))
+
+;; non-nil なら逆変換のsetupをする
+(defvar setup-reverse nil)
+
+;; 正変換用のsetup
+(defun wnn4-jserver-setup ()
+  (set-wnn-reverse nil)
+  (set-wnn-fuzokugo "pubdic+/full.fzk")
+  (add-wnn-dict "pubdic+/kihon.dic" (concat wnn-usr-dic-dir "/kihon.h") 5 nil t)
+  (add-wnn-dict "pubdic+/setsuji.dic" (concat wnn-usr-dic-dir "/setsuji.h") 5 nil t)
+  (add-wnn-dict "pubdic+/koyuu.dic" (concat wnn-usr-dic-dir "/koyuu.h") 1 nil t)
+  (add-wnn-dict "pubdic+/chimei.dic" (concat wnn-usr-dic-dir "/chimei.h") 1 nil t)
+  (add-wnn-dict "pubdic+/jinmei.dic" (concat wnn-usr-dic-dir "/jinmei.h") 1 nil t)
+  (add-wnn-dict "pubdic+/special.dic" (concat wnn-usr-dic-dir "/special.h") 5 nil t)
+  (add-wnn-dict "pubdic+/computer.dic" (concat wnn-usr-dic-dir "/computer.h") 5 nil t)
+  (add-wnn-dict "pubdic+/symbol.dic" (concat wnn-usr-dic-dir "/symbol.h") 1 nil t)
+;  (add-wnn-dict "pubdic+/tankan.dic" "" 1 nil nil)
+  (add-wnn-dict "pubdic+/tankan.dic" (concat wnn-usr-dic-dir "/pubdic+/tankan.h") 1 nil t)
+  (add-wnn-dict "pubdic+/bio.dic" (concat wnn-usr-dic-dir "/bio.h") 1 nil t)
+;  (add-wnn-dict "gerodic/g-jinmei.dic" (concat wnn-usr-dic-dir "/g-jinmei.h") 1 nil t)
+;  (add-wnn-dict "misc/supplement.dic" (concat wnn-usr-dic-dir "/supplement.h") 1 nil t)
+  (add-wnn-dict (concat wnn-usr-dic-dir "/ud") "" 5 t t)
+;  (add-wnn-dict "wnncons/tankan2.dic" "" 1 nil nil)
+;  (add-wnn-dict "wnncons/tankan3.dic" "" 1 nil nil)
+;  (set-wnn-param  2 10 2 45 5  80 5 1 40  0 400 -100 400   80 200 2 200) ; Original
+  (set-wnn-param  2 10 2 45 100 200 5 1 40  -100 200 -100 200 80 200 200 200)
+)
+
+;; 逆変換用のsetup
+(defun wnn4-jserver-reverse-setup ()
+  (set-wnn-reverse t)
+  (set-wnn-fuzokugo "pubdic+/full.fzk")
+  (add-wnn-dict "pubdic+/kihon.dic" (concat wnn-usr-dic-dir "/kihon.h") 5 nil t)
+  (add-wnn-dict "pubdic+/setsuji.dic" (concat wnn-usr-dic-dir "/setsuji.h") 5 nil t)
+  (add-wnn-dict "pubdic+/koyuu.dic" (concat wnn-usr-dic-dir "/koyuu.h") 1 nil t)
+  (add-wnn-dict "pubdic+/chimei.dic" (concat wnn-usr-dic-dir "/chimei.h") 1 nil t)
+  (add-wnn-dict "pubdic+/jinmei.dic" (concat wnn-usr-dic-dir "/jinmei.h") 1 nil t)
+  (add-wnn-dict "pubdic+/special.dic" (concat wnn-usr-dic-dir "/special.h") 5 nil t)
+  (add-wnn-dict "pubdic+/computer.dic" (concat wnn-usr-dic-dir "/computer.h") 5 nil t)
+;  (add-wnn-dict "pubdic+/symbol.dic" (concat wnn-usr-dic-dir "/symbol.h") 1 nil t)
+  (add-wnn-dict "pubdic+/tankan.dic" "" 1 nil nil)
+  (add-wnn-dict "pubdic+/bio.dic" (concat wnn-usr-dic-dir "/bio.h") 1 nil t)
+;  (add-wnn-dict "gerodic/g-jinmei.dic" (concat wnn-usr-dic-dir "/g-jinmei.h") 1 nil t)
+;  (add-wnn-dict "misc/supplement.dic" (concat wnn-usr-dic-dir "/supplement.h") 1 nil t)
+  (add-wnn-dict (concat wnn-usr-dic-dir "/ud") "" 5 t t)
+;  (add-wnn-dict "wnncons/tankan2.dic" "" 1 nil nil)
+;  (add-wnn-dict "wnncons/tankan3.dic" "" 1 nil nil)
+  (set-wnn-param  2 10 2 45 1 80 5 1 50 -20 400 -10  100  -100 200 0 200)
+  (set-wnn-reverse nil)
+)
+
+(wnn4-jserver-setup)
+(if setup-reverse
+    (wnn4-jserver-reverse-setup))
+
+;; EOF

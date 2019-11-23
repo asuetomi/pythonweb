@@ -1,0 +1,10 @@
+get-content -Encoding euc-jp bio.u | Out-File -Encoding UTF8  .\utf-8\bio.u 
+get-content -Encoding euc-jp chimei.u | Out-File -Encoding UTF8 .\utf-8\chimei.u
+get-content -Encoding euc-jp computer.u | Out-File -Encoding UTF8 .\utf-8\computer.u 
+get-content -Encoding euc-jp jinmei.u  | Out-File -Encoding UTF8 .\utf-8\jinmei.u  
+get-content -Encoding euc-jp kihon.u | Out-File -Encoding UTF8 .\utf-8\kihon.u
+get-content -Encoding euc-jp koyuu.u | Out-File -Encoding UTF8 .\utf-8\koyuu.u
+get-content -Encoding euc-jp setsuji.u | Out-File -Encoding UTF8 .\utf-8\setsuji.u
+get-content -Encoding euc-jp special.u | Out-File -Encoding UTF8 .\utf-8\special.u
+get-content -Encoding euc-jp symbol.u | Out-File -Encoding UTF8 .\utf-8\symbol.u
+get-content -Encoding euc-jp tankan.u | Out-File -Encoding UTF8 .\utf-8\tankan.u
