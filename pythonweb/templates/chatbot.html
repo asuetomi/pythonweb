@@ -5,6 +5,7 @@
     <body>
         <form action="{% url 'chatbot:chatbot' %}" method='POST'>
             {% csrf_token %}
+            {{ prompt }}
             {{ form }}
             {% comment %} <input type="hidden" name="lines" value={{ lines|safe }}> {% endcomment %}
             <input type="submit" value="送信">

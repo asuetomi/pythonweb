@@ -78,7 +78,7 @@ def siritori():
         while(useCount <= len(ans) - 1):
             res = ans[random.randint(0, len(ans) - 1)]
             if (res in usedDic):
-                useCount += 1
+                useCount += 1ｂ
                 res = ""
                 continue
             else:
